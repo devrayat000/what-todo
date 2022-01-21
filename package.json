@@ -1,0 +1,62 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with Fastify-CLI.",
+  "main": "app.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run build:ts && ttsc -p test/tsconfig.json && tap --ts test/**/*.test.ts",
+    "start": "fastify start -l info build/cjs/app.cjs",
+    "build:ts": "ttsc",
+    "build": "rollup --config rollup.config.js",
+    "dev": "ttsc && cross-env NODE_ENV=development concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"ttsc -w\" \"fastify start --ignore-watch=.ts$ -w -l info -P .server/src/app.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-tools/schema": "^8.3.1",
+    "altair-fastify-plugin": "^4.3.1",
+    "fastify": "^3.0.0",
+    "fastify-autoload": "^3.3.1",
+    "fastify-cli": "^2.14.0",
+    "fastify-plugin": "^3.0.0",
+    "fastify-sensible": "^3.1.0",
+    "fastify-websocket": "^4.0.0",
+    "graphql": "^16.2.0",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.5.5",
+    "knex": "^1.0.1",
+    "mercurius": "^9.1.0",
+    "mercurius-codegen": "^3.3.0",
+    "pg": "^8.7.1",
+    "subscriptions-transport-ws": "^0.11.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-graphql": "^1.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-replace": "^3.0.1",
+    "@types/node": "^16.0.0",
+    "@types/pg": "^8.6.4",
+    "@types/tap": "^15.0.0",
+    "better-sqlite3": "^7.5.0",
+    "concurrently": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "fastify-tsconfig": "^1.0.1",
+    "knex-tiny-logger": "^2.1.0",
+    "prettier": "^2.5.1",
+    "rollup": "^2.65.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-tsconfig-paths": "^1.1.6",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "tap": "^15.0.9",
+    "ts-node": "^10.0.0",
+    "tslib": "^2.3.1",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.2.4",
+    "typescript-transform-paths": "^3.3.1"
+  }
+}

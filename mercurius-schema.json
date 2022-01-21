@@ -1,0 +1,3 @@
+[
+  "scalar Date\n\ntype Todo {\n  _id: ID!\n  todo: String!\n  description: String!\n  done: Boolean!\n  createdAt: Date!\n}\n\ntype Query {\n  todos: [Todo!]!\n  todo(id: ID!): Todo!\n}\n\ntype Mutation {\n  createTodo(todo: String!, description: String!): Todo!\n  updateTodo(id: ID!, todo: String, description: String): Todo!\n  toggleDone(id: ID!): Todo!\n  deleteTodo(id: ID!): Todo!\n}\n\ntype Subscription {\n  todoAdded: Todo!\n  todoUpdated: Todo!\n  todoDeleted: Todo!\n}\n\nschema {\n  query: Query\n  mutation: Mutation\n  subscription: Subscription\n}"
+]

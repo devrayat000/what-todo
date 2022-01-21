@@ -1,0 +1,33 @@
+{
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "outDir": ".server",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "baseUrl": "./",
+    "paths": {
+      "$plugins/*": ["src/plugins/*"],
+      "$graphql/*": ["src/graphql/*"],
+      "$types/*": ["src/types/*"],
+    },
+    "typeRoots": ["./src/types/graphql.d.ts"],
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths",
+        // "afterDeclarations": true
+      }
+    ],
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
