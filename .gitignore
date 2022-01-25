@@ -1,0 +1,5 @@
+# Executables
+**/*.exe
+
+# Development
+version.sh
