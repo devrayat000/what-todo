@@ -5,12 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { pink } from '@mui/material/colors'
 import SuperTokensReact from 'supertokens-auth-react'
-import {
-  DehydratedState,
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+// import {
+//   DehydratedState,
+//   Hydrate,
+//   QueryClient,
+//   QueryClientProvider,
+// } from 'react-query'
 import Session from 'supertokens-auth-react/recipe/session'
 import { redirectToAuth } from 'supertokens-auth-react/recipe/emailpassword'
 import Spinner from '@mui/material/CircularProgress'
@@ -19,6 +19,8 @@ import Backdrop from '@mui/material/Backdrop'
 import { frontendConfig } from '../config/frontendConfig'
 // import { createStore, Provider } from '../utils/store'
 import { ITodo } from '../interfaces'
+import { Provider } from 'urql'
+import client from '../utils/urql'
 
 async function initNode() {
   const supertokensNode = await import('supertokens-node')
@@ -34,7 +36,7 @@ const theme = createTheme({
   palette: { secondary: pink },
 })
 
-const queryClient = new QueryClient()
+// const queryClient = new QueryClient()
 
 const MyApp: NextPage<MyAppProps> = ({ Component, pageProps, router }) => {
   useEffect(() => {
@@ -65,13 +67,9 @@ const MyApp: NextPage<MyAppProps> = ({ Component, pageProps, router }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* <Provider createStore={createStore}> */}
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Component {...(pageProps as any)} />
-        </Hydrate>
-      </QueryClientProvider>
-      {/* </Provider> */}
+      <Provider value={client}>
+        <Component {...(pageProps as any)} />
+      </Provider>
     </ThemeProvider>
   )
 }
@@ -86,7 +84,7 @@ declare module 'next/app' {
 
 interface MyAppProps extends AppProps {
   pageProps: {
-    dehydratedState: DehydratedState
+    // dehydratedState: DehydratedState
     fromSupertokens?: string
   }
 }

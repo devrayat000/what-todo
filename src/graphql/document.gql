@@ -1,0 +1,53 @@
+fragment TodoFrag on Todo {
+  __typename
+  _id
+  todo
+  description
+  done
+  createdAt
+}
+
+query Todos {
+  todos {
+    ...TodoFrag
+  }
+}
+
+mutation CreateTodo($todo: String!, $desc: String!) {
+  createTodo(input: { todo: $todo, description: $desc }) {
+    __typename
+    _id
+  }
+}
+
+mutation UpdateTodo($id: ID!, $todo: String, $desc: String) {
+  updateTodo(id: $id, input: { todo: $todo, description: $desc }) {
+    __typename
+    _id
+  }
+}
+
+mutation DeleteTodo($id: ID!) {
+  deleteTodo(id: $id) {
+    __typename
+    _id
+  }
+}
+
+subscription TodoAdded {
+  todoAdded {
+    ...TodoFrag
+  }
+}
+
+subscription TodoUpdated($id: ID!) {
+  todoUpdated(id: $id) {
+    ...TodoFrag
+  }
+}
+
+subscription TodoDeleted($id: ID!) {
+  todoDeleted(id: $id) {
+    ...TodoFrag
+  }
+}

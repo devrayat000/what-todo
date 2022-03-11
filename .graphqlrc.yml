@@ -1,0 +1,14 @@
+schema: http://localhost:3001/api/graphql
+documents: './src/graphql/document.gql'
+
+extensions:
+
+  codegen:
+    generates:
+      ./src/graphql/generated.ts:
+        config:
+          withHooks: true
+        plugins:
+          - typescript
+          - typescript-operations
+          - typescript-urql
