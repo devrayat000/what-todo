@@ -7,8 +7,9 @@ import shallow from 'zustand/shallow'
 // import { useTodoStore } from '../utils/store'
 import TodoItem from './TodoItem'
 import { ITodo } from '../interfaces'
+import { Todo } from '../graphql/generated'
 
-const Todos = ({ todos }: { todos: ITodo[] }) => {
+const Todos = ({ todos }: { todos?: Todo[] }) => {
   // const { deleteTodo, completeTodo } = useTodoStore(
   //   useCallback(
   //     store => ({
@@ -30,7 +31,7 @@ const Todos = ({ todos }: { todos: ITodo[] }) => {
   return (
     <List>
       <TransitionGroup>
-        {todos.map(todo => {
+        {todos?.map(todo => {
           return (
             <Collapse key={todo._id}>
               <TodoItem

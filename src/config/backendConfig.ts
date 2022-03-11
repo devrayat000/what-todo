@@ -17,3 +17,9 @@ export const backendConfig = (): TypeInput => {
     // isInServerlessEnv: true,
   }
 }
+
+export async function initBackend() {
+  const supertokensNode = await import('supertokens-node')
+  const { backendConfig } = await import('../config/backendConfig')
+  supertokensNode.init(backendConfig())
+}

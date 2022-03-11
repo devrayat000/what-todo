@@ -1,46 +1,29 @@
 import Head from 'next/head'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
 import type { GetServerSideProps, NextPage } from 'next'
 import Session, { Error as SessionError } from 'supertokens-node/recipe/session'
-import SuperTokensReact from 'supertokens-auth-react'
 
 import Todos from '../components/Todos'
 import AddTodo from '../components/AddTodo'
 import withProps from '../utils/withProps'
-import { api } from '../utils/axios'
-import { ITodo } from '../interfaces'
-import { getKnex } from '../utils/knex'
-import { frontendConfig } from '../config/frontendConfig'
+import { initFrontend } from '../config/frontendConfig'
+import { initBackend } from '../config/backendConfig'
+import client, { ssr } from '../utils/urql'
+import { TodosDocument, useTodosQuery } from '../graphql/generated'
 
-function fetcher() {
-  return api.get<{ todos: ITodo[] }>('/api/todo').then(r => r.data.todos)
-}
-
-if (typeof window !== 'undefined') {
-  SuperTokensReact.init(frontendConfig())
-}
+initFrontend()
 
 const Home: NextPage = () => {
-  // const {
-  //   data: todos,
-  //   error,
-  //   isLoading,
-  //   isError,
-  // } = useQuery('/api/todo', fetcher, {
-  //   onSuccess: data => {
-  //     console.log('success:', data)
-  //   },
-  // })
+  const [{ data, error, fetching }] = useTodosQuery()
 
-  // if (isLoading) {
-  //   return <h1>loading...</h1>
-  // }
+  if (fetching) {
+    return <h1>loading...</h1>
+  }
 
-  // if (isError) {
-  //   return <pre>{(error as Error).message}</pre>
-  // }
+  if (error) {
+    return <pre>{(error as Error).message}</pre>
+  }
 
   return (
     <section>
@@ -56,7 +39,7 @@ const Home: NextPage = () => {
         }}
       >
         <AddTodo />
-        {/* <Todos todos={todos!} /> */}
+        <Todos todos={data?.todos} />
       </Container>
     </section>
   )
@@ -64,21 +47,17 @@ const Home: NextPage = () => {
 
 const MainPaper = withProps(Paper, { elevation: 2, component: 'main' })
 
-async function initNode() {
-  const supertokensNode = await import('supertokens-node')
-  const { backendConfig } = await import('../config/backendConfig')
-  supertokensNode.init(backendConfig())
-}
-
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  console.log('gsp')
   try {
-    await initNode()
+    await initBackend()
     const session = await Session.getSession(ctx.req, ctx.res)
-    console.log('gsp')
+
+    await client.query(TodosDocument).toPromise()
 
     return {
-      props: {},
+      props: {
+        urqlState: ssr.extractData(),
+      },
     }
   } catch (error) {
     console.log(error)

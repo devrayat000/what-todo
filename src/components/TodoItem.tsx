@@ -13,9 +13,10 @@ import { ITodo } from '../interfaces'
 // import { useTodoStore } from '../utils/store'
 import { FORMATTER } from '../utils/const'
 import useTodo from '../hooks/useTodo'
+import { Todo } from '../graphql/generated'
 
 export interface TodoItemProps {
-  todo: ITodo
+  todo: Todo
   // onDone(id: string): void
   // onDelete(id: string): void
 }
