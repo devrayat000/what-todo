@@ -1,4 +1,5 @@
 # Executables
+bin
 **/*.exe
 
 # Development

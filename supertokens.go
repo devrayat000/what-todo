@@ -11,19 +11,19 @@ import (
 
 func SuperToken() gin.HandlerFunc {
 	apiBasePath := "/api/auth"
-	websiteBasePath := "/auth"
+	// websiteBasePath := "/"
 	err := supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
 			// try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
-			ConnectionURI: "https://try.supertokens.com",
+			ConnectionURI: "http://localhost:3567",
 			// APIKey: "IF YOU HAVE AN API KEY FOR THE CORE, ADD IT HERE",
 		},
 		AppInfo: supertokens.AppInfo{
-			AppName:         "What Todo",
-			APIDomain:       "http://localhost:3001",
-			WebsiteDomain:   "http://localhost:3000",
-			APIBasePath:     &apiBasePath,
-			WebsiteBasePath: &websiteBasePath,
+			AppName:       "What Todo",
+			APIDomain:     "http://localhost:3001",
+			WebsiteDomain: "http://localhost:3000",
+			APIBasePath:   &apiBasePath,
+			// WebsiteBasePath: &websiteBasePath,
 		},
 		RecipeList: []supertokens.Recipe{
 			session.Init(nil),

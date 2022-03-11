@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/devRayat/todoapi/graph/generated"
@@ -21,7 +22,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	}
 
 	columns := util.GetColumns(ctx)
-	result := r.DB.Table("todo").Select("Todo", "Description").Clauses(clause.Returning{Columns: columns}).Create(todo)
+	result := r.DB.Table("todos").Select("Todo", "Description").Clauses(clause.Returning{Columns: columns}).Create(todo)
 
 	r.Subscriber.NewTodo = todo
 
@@ -37,10 +38,10 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input model.UpdateTodo) (*model.Todo, error) {
 	updatedTodo := &model.Todo{ID: id}
 
-	model := r.DB.Table("todo").Model(updatedTodo).Clauses(clause.Returning{})
+	model := r.DB.Table("todos").Model(updatedTodo).Clauses(clause.Returning{})
 
 	if input.Todo != nil {
-		model = model.UpdateColumn("todo", *input.Todo)
+		model = model.UpdateColumn("todos", *input.Todo)
 	}
 	if input.Description != nil {
 		model = model.UpdateColumn("description", *input.Description)
@@ -62,7 +63,7 @@ func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input mode
 func (r *mutationResolver) DeleteTodo(ctx context.Context, id string) (*model.Todo, error) {
 	todo := &model.Todo{ID: id}
 
-	result := r.DB.Table("todo").Clauses(clause.Returning{}).Delete(todo)
+	result := r.DB.Table("todos").Clauses(clause.Returning{}).Delete(todo)
 
 	r.Subscriber.DeletedTodo = todo
 
@@ -78,16 +79,23 @@ func (r *mutationResolver) DeleteTodo(ctx context.Context, id string) (*model.To
 func (r *mutationResolver) ToggleDone(ctx context.Context, id string) (*model.Todo, error) {
 	todo := &model.Todo{ID: id}
 
-	result := r.DB.Table("todo").Model(todo).Clauses(clause.Returning{}).UpdateColumn("done", gorm.Expr("NOT done"))
+	result := r.DB.Table("todos").Model(todo).Clauses(clause.Returning{}).UpdateColumn("done", gorm.Expr("NOT done"))
 
 	return todo, result.Error
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	gc, err := GinContextFromContext(ctx)
+
+	if err != nil {
+		fmt.Printf("Error occured while fetching id, %s", err.Error())
+	}
+	fmt.Printf("User id: %s", gc.Request.URL)
+
 	var todos []*model.Todo
 
 	fields := util.GetPreloads(ctx)
-	result := r.DB.Table("todo").Select(fields).Order("_id ASC").Find(&todos)
+	result := r.DB.Table("todos").Select(fields).Order("_id ASC").Find(&todos)
 
 	return todos, result.Error
 }
@@ -96,7 +104,7 @@ func (r *queryResolver) Todo(ctx context.Context, id string) (*model.Todo, error
 	var todo *model.Todo
 
 	fields := util.GetPreloads(ctx)
-	result := r.DB.Table("todo").Select(fields).First(&todo, id)
+	result := r.DB.Table("todos").Select(fields).First(&todo, id)
 
 	return todo, result.Error
 }

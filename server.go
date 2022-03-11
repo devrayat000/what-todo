@@ -38,8 +38,9 @@ func main() {
 	SuperToken()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
+		// AllowOrigins: []string{"http://localhost:3000"},
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
 		AllowHeaders: append([]string{"content-type"},
 			supertokens.GetAllCORSHeaders()...),
 		AllowCredentials: true,
@@ -49,6 +50,7 @@ func main() {
 	server.GET("/sessioninfo", m.VerifySession(nil), m.Sessioninfo)
 
 	// --- Graphql
+	server.Use(graph.GinContextToContextMiddleware())
 	server.POST("/api/graphql", graph.GraphqlHandler(db))
 	log.Printf("GraphQL server running at http://localhost%s/graphql", port)
 
