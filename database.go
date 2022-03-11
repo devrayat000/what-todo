@@ -5,13 +5,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/devRayat/todoapi/graph/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 func SetupDB(dsn string) *gorm.DB {
-	log.Println("Setting up SQLite 3 database ...")
+	log.Println("Setting up Postgres database ...")
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -31,6 +32,8 @@ func SetupDB(dsn string) *gorm.DB {
 	}
 
 	log.Println("Database initialised")
+
+	db.AutoMigrate(&model.Todo{})
 	log.Println("Database migration complete")
 	return db
 }
