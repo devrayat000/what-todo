@@ -14,7 +14,7 @@ type AppConfig struct {
 }
 
 var (
-	DefaultPort = "8080"
+	DefaultPort = "3001"
 	Env         = "development"
 )
 
@@ -44,7 +44,7 @@ func DefaultAppConfig() *AppConfig {
 	dbConnectionString := os.Getenv("DATABASE_CONNECTION")
 	if dbConnectionString == "" {
 		// log.Fatal("The environment variable PORT doesn't exist")
-		dbConnectionString = "host=localhost port=5432 user=postgres dbname=todo-db sslmode=disable password=ppooii12"
+		dbConnectionString = "host=localhost port=5432 user=postgres dbname=what-todo sslmode=disable password=ppooii12"
 	}
 
 	return &AppConfig{
