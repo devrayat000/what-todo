@@ -8,7 +8,7 @@ import Todo from './todo'
 const store: StateCreator<StoreModel> = set => ({
   todos: [],
   createTodo(text) {
-    const newTodo = new Todo(text)
+    const newTodo = new Todo(text, '')
     set(prev => ({
       todos: [...prev.todos, newTodo],
     }))

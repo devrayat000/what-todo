@@ -6,7 +6,7 @@ import { appInfo } from './appInfo'
 
 export const backendConfig = (): TypeInput => {
   return {
-    framework: 'express',
+    // framework: 'express',
     supertokens: {
       // try.supertokens.io is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.io), or self host a core.
       connectionURI: process.env.NEXT_PUBLIC_SUPERTOKENS_CONNECTION_URI!,
@@ -14,6 +14,6 @@ export const backendConfig = (): TypeInput => {
     },
     appInfo,
     recipeList: [EmailPasswordNode.init(), SessionNode.init()],
-    isInServerlessEnv: true,
+    // isInServerlessEnv: true,
   }
 }

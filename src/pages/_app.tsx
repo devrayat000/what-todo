@@ -1,4 +1,6 @@
-import { AppProps, AppInitialProps, AppContext } from 'next/app'
+import { useEffect } from 'react'
+import { NextPage } from 'next'
+import { AppProps } from 'next/app'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { pink } from '@mui/material/colors'
@@ -17,7 +19,6 @@ import Backdrop from '@mui/material/Backdrop'
 import { frontendConfig } from '../config/frontendConfig'
 // import { createStore, Provider } from '../utils/store'
 import { ITodo } from '../interfaces'
-import { useEffect } from 'react'
 
 async function initNode() {
   const supertokensNode = await import('supertokens-node')
@@ -27,8 +28,6 @@ async function initNode() {
 
 if (typeof window !== 'undefined') {
   SuperTokensReact.init(frontendConfig())
-} else {
-  initNode().catch(console.error)
 }
 
 const theme = createTheme({
@@ -37,13 +36,10 @@ const theme = createTheme({
 
 const queryClient = new QueryClient()
 
-const MyApp: NextApp = ({ Component, pageProps, router }) => {
+const MyApp: NextPage<MyAppProps> = ({ Component, pageProps, router }) => {
   useEffect(() => {
     async function doRefresh() {
       console.log('app.tsx refresh effect')
-      // pageProps.fromSupertokens === 'needs-refresh' will be true
-      // when in getServerSideProps, getSession throws a TRY_REFRESH_TOKEN
-      // error.
 
       if (pageProps.fromSupertokens === 'needs-refresh') {
         try {
@@ -54,28 +50,12 @@ const MyApp: NextApp = ({ Component, pageProps, router }) => {
           console.log('app.tsx redirect', error)
           redirectToAuth({ redirectBack: true })
         }
-        // if (await Session.attemptRefreshingSession()) {
-        //   // post session refreshing, we reload the page. This will
-        //   // send the new access token to the server, and then
-        //   // getServerSideProps will succeed
-        //   console.log('app.tsx retry')
-        //   location.reload()
-        // } else {
-        //   // the user's session has expired. So we redirect
-        //   // them to the login page
-        //   console.log('app.tsx redirect')
-
-        //   redirectToAuth({ redirectBack: true })
-        // }
       }
     }
     doRefresh()
   }, [pageProps.fromSupertokens])
 
   if (pageProps.fromSupertokens === 'needs-refresh') {
-    // in case the frontend needs to refresh, we show nothing.
-    // Alternatively, you can show a spinner.
-
     return (
       <Backdrop open={true}>
         <Spinner />
@@ -88,7 +68,7 @@ const MyApp: NextApp = ({ Component, pageProps, router }) => {
       {/* <Provider createStore={createStore}> */}
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <Component {...pageProps} />
+          <Component {...(pageProps as any)} />
         </Hydrate>
       </QueryClientProvider>
       {/* </Provider> */}
@@ -97,12 +77,6 @@ const MyApp: NextApp = ({ Component, pageProps, router }) => {
 }
 
 export default MyApp
-
-interface NextApp {
-  (props: AppProps): JSX.Element
-  getInitialProps?(context: AppContext): Promise<AppInitialProps>
-}
-
 declare module 'next/app' {
   interface AppInitialProps {
     todos: ITodo[]
@@ -110,8 +84,9 @@ declare module 'next/app' {
   }
 }
 
-type MyAppProps = {
+interface MyAppProps extends AppProps {
   pageProps: {
     dehydratedState: DehydratedState
+    fromSupertokens?: string
   }
 }

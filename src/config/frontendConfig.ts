@@ -9,21 +9,16 @@ export const frontendConfig = (): SuperTokensConfig => {
     appInfo,
     recipeList: [
       EmailPasswordReact.init({
-        getRedirectionURL: async context => {
-          if (context.action === 'SUCCESS') {
-            if (context.redirectToPath !== undefined) {
-              // we are navigating back to where the user was before they authenticated
-              return context.redirectToPath
-            }
-            return '/'
-          }
-          return undefined
-        },
-        // override: {
-        //   components: {
-        //     EmailPasswordSignIn: ({ DefaultComponent, ...props }) => {}
+        // getRedirectionURL: async context => {
+        //   if (context.action === 'SUCCESS') {
+        //     if (context.redirectToPath !== undefined) {
+        //       // we are navigating back to where the user was before they authenticated
+        //       return context.redirectToPath
+        //     }
+        //     return '/'
         //   }
-        // }
+        //   return undefined
+        // },
       }),
       SessionReact.init(),
     ],
