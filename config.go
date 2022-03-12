@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
+
+	"github.com/devRayat/todoapi/env"
 )
 
 type AppConfig struct {
@@ -13,42 +14,25 @@ type AppConfig struct {
 	DBConnection string
 }
 
-var (
-	DefaultPort = "3001"
-	Env         = "development"
+const (
+	DefaultPort  = 3001
+	Env          = "development"
+	DefaultDbCon = "host=localhost port=5432 user=postgres dbname=what-todo sslmode=disable password=ppooii12"
 )
 
 func DefaultAppConfig() *AppConfig {
-	env := os.Getenv("GO_ENV")
-	if env == "" {
-		env = Env
-	}
+	goenv := env.String("GO_ENV", Env)
+	host := env.String("HOST", "http://localhost")
+	port := env.Int("PORT", DefaultPort)
+	dbConnectionString := env.String("DATABASE_CONNECTION", DefaultDbCon)
 
-	host := os.Getenv("HOST")
-	if host == "" {
-		// log.Fatal("The environment variable HOST doesn't exist")
-		host = "http://localhost"
-	}
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		// log.Fatal("The environment variable PORT doesn't exist")
-		port = DefaultPort
-	}
-
-	appHost, err := url.Parse(fmt.Sprintf("%s:%s", host, port))
+	appHost, err := url.Parse(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		log.Fatal("The environmental variable HOST or PORT is malformed")
 	}
 
-	dbConnectionString := os.Getenv("DATABASE_CONNECTION")
-	if dbConnectionString == "" {
-		// log.Fatal("The environment variable PORT doesn't exist")
-		dbConnectionString = "host=localhost port=5432 user=postgres dbname=what-todo sslmode=disable password=ppooii12"
-	}
-
 	return &AppConfig{
-		IsProd:       env == "production",
+		IsProd:       goenv == "production",
 		AppUrl:       appHost,
 		DBConnection: dbConnectionString,
 	}
