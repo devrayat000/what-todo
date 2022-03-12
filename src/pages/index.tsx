@@ -1,6 +1,8 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
 import type { GetServerSideProps, NextPage } from 'next'
 import Session, { Error as SessionError } from 'supertokens-node/recipe/session'
 
@@ -11,28 +13,51 @@ import { initFrontend } from '../config/frontendConfig'
 import { initBackend } from '../config/backendConfig'
 import client, { ssr } from '../utils/urql'
 import { TodosDocument, useTodosQuery } from '../graphql/generated'
+import { Box, Card, TextField, InputBase } from '@mui/material'
 
 // initFrontend()
 
 const Home: NextPage = () => {
   return (
-    <section>
+    <Box
+      component='section'
+      sx={{
+        inset: 0,
+        position: 'absolute',
+      }}
+    >
       <Head>
         <title>Home</title>
       </Head>
-      <Container
-        component={MainPaper}
-        maxWidth='sm'
-        sx={{
-          p: 2,
-          borderRadius: 2,
-        }}
-      >
-        <AddTodo />
-        {/* <Todos todos={data?.todos} /> */}
-        <Todos />
-      </Container>
-    </section>
+      <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+        <Image
+          src='/images/bg-desktop-light.jpg'
+          layout='fill'
+          objectFit='contain'
+          objectPosition='top center'
+        />
+      </Box>
+      <Box sx={{ position: 'absolute', inset: 0 }}>
+        <Container
+          // component={MainPaper}
+          maxWidth='md'
+          sx={{
+            p: 2,
+            borderRadius: 2,
+            mt: t => t.spacing(12),
+          }}
+        >
+          <Typography variant='h4' sx={{ textTransform: 'uppercase' }}>
+            Todo
+          </Typography>
+          <Paper>
+            <InputBase placeholder='Create a new todo..' fullWidth />
+          </Paper>
+          {/* <AddTodo /> */}
+          {/* <Todos /> */}
+        </Container>
+      </Box>
+    </Box>
   )
 }
 
