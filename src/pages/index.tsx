@@ -50,10 +50,7 @@ const Home: NextPage = () => {
           <Typography variant='h4' sx={{ textTransform: 'uppercase' }}>
             Todo
           </Typography>
-          <Paper>
-            <InputBase placeholder='Create a new todo..' fullWidth />
-          </Paper>
-          {/* <AddTodo /> */}
+          <AddTodo />
           {/* <Todos /> */}
         </Container>
       </Box>

@@ -1577,12 +1577,12 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/icons-material@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.1.1.tgz#f3f44275855e924cdf5e379da87299d633854b53"
-  integrity sha512-tLM1/QhVAgcetEscZa8BlM1IRRaoNxjhFzQOIs5wAuuVhHSrB8zZCKugpZVIZ1nKyQqLgVEa9TbtWpo5jLrnRQ==
+"@mui/icons-material@^5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.5.0.tgz#23d5f13c62c19a75b184374a6ea6ed0f8019531d"
+  integrity sha512-rMs5flT3INyd/m1A/x8DDlNTfHmCartX8stCuSDDMmaMV123oSwg8werJ/Hg4j1FWuVk5rE5HRY45gBf12BCGw==
   dependencies:
-    "@babel/runtime" "^7.16.3"
+    "@babel/runtime" "^7.17.2"
 
 "@mui/material@^5.5.0":
   version "5.5.0"
@@ -1602,15 +1602,6 @@
     react-is "^17.0.2"
     react-transition-group "^4.4.2"
 
-"@mui/private-theming@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@mui/private-theming/-/private-theming-5.1.1.tgz#3e9e91d81a8e69dcb5c4499236e26d684cd4a919"
-  integrity sha512-h+MGzBVSH7GgXou4aIraJhakygTYIWvvxvTm81Y6RmwRcrzv8szDQeRDiM7iOVjqsS33dXfMkTi7csRCgeErsg==
-  dependencies:
-    "@babel/runtime" "^7.16.3"
-    "@mui/utils" "^5.1.1"
-    prop-types "^15.7.2"
-
 "@mui/private-theming@^5.4.4":
   version "5.4.4"
   resolved "https://registry.yarnpkg.com/@mui/private-theming/-/private-theming-5.4.4.tgz#cc2b2d897888ce5d1c319adfa2c50c0063a649ab"
@@ -1629,18 +1620,18 @@
     "@emotion/cache" "^11.7.1"
     prop-types "^15.7.2"
 
-"@mui/styles@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@mui/styles/-/styles-5.1.1.tgz#59e240db3a117eae0fe37dcb98d6935a72d25da7"
-  integrity sha512-dM1H5sGLB+aXPOi1OAd+riXX/+RxEC4hOcV9INcbrabbS3b4WBU24lW777ixka3iFwg9HH/FcVCp7M6U5WEGJQ==
+"@mui/styles@^5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@mui/styles/-/styles-5.5.0.tgz#10a9e013181d40b96dc5ee6b3a981f1876d3c623"
+  integrity sha512-elRM9/1t8jJJc2X/T/Yau40sQ3+IxM8sdxA9CbHas/EU4DJ2LjkdmmmnSv2lXG32SWUIPU1Pjr6Jy3KPt2NoUw==
   dependencies:
-    "@babel/runtime" "^7.16.3"
+    "@babel/runtime" "^7.17.2"
     "@emotion/hash" "^0.8.0"
-    "@mui/private-theming" "^5.1.1"
-    "@mui/types" "^7.1.0"
-    "@mui/utils" "^5.1.1"
+    "@mui/private-theming" "^5.4.4"
+    "@mui/types" "^7.1.2"
+    "@mui/utils" "^5.4.4"
     clsx "^1.1.1"
-    csstype "^3.0.9"
+    csstype "^3.0.11"
     hoist-non-react-statics "^3.3.2"
     jss "^10.8.2"
     jss-plugin-camel-case "^10.8.2"
@@ -1666,26 +1657,10 @@
     csstype "^3.0.11"
     prop-types "^15.7.2"
 
-"@mui/types@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@mui/types/-/types-7.1.0.tgz#5ed928c5a41cfbf9a4be82ea3bbdc47bcc9610d5"
-  integrity sha512-Hh7ALdq/GjfIwLvqH3XftuY3bcKhupktTm+S6qRIDGOtPtRuq2L21VWzOK4p7kblirK0XgGVH5BLwa6u8z/6QQ==
-
 "@mui/types@^7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@mui/types/-/types-7.1.2.tgz#4f3678ae77a7a3efab73b6e040469cc6df2144ac"
   integrity sha512-SD7O1nVzqG+ckQpFjDhXPZjRceB8HQFHEvdLLrPhlJy4lLbwEBbxK74Tj4t6Jgk0fTvLJisuwOutrtYe9P/xBQ==
-
-"@mui/utils@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.1.1.tgz#3cb2c049731dacb3830336bc8011141e84434aad"
-  integrity sha512-rqakHf0IMaasDo1EcYqkx13VTxeoQoGf/3RxQuazQFKzF7d2uylFwNyb6bnUJGNe2/akiIMk/qiub58sYrwxVQ==
-  dependencies:
-    "@babel/runtime" "^7.16.3"
-    "@types/prop-types" "^15.7.4"
-    "@types/react-is" "^16.7.1 || ^17.0.0"
-    prop-types "^15.7.2"
-    react-is "^17.0.2"
 
 "@mui/utils@^5.4.4":
   version "5.4.4"
@@ -3545,7 +3520,7 @@ csstype@^3.0.11:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
   integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
 
-csstype@^3.0.2, csstype@^3.0.6, csstype@^3.0.9:
+csstype@^3.0.2, csstype@^3.0.6:
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
   integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
