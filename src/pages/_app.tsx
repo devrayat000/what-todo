@@ -13,7 +13,8 @@ import type { AppProps } from 'next/app'
 
 import { initFrontend } from '../config/frontendConfig'
 import client, { ssr } from '../utils/urql'
-import type { ITodo } from '../interfaces'
+import { Todo } from '../graphql/generated'
+import StoreProvider from '../components/StoreProvider'
 
 initFrontend()
 
@@ -50,20 +51,40 @@ const MyApp: NextPage<MyAppProps> = ({ Component, pageProps, router }) => {
       </Backdrop>
     )
   }
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeWrapper>
       <Provider value={client}>
         <Component {...(pageProps as any)} />
       </Provider>
+    </ThemeWrapper>
+  )
+}
+
+const DevApp: NextPage<AppProps> = ({ Component, pageProps }) => {
+  return (
+    <ThemeWrapper>
+      <StoreProvider>
+        <Component {...(pageProps as any)} />
+      </StoreProvider>
+    </ThemeWrapper>
+  )
+}
+
+export default DevApp
+
+const ThemeWrapper: React.FC = ({ children }) => {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
     </ThemeProvider>
   )
 }
 
-export default MyApp
 declare module 'next/app' {
   interface AppInitialProps {
-    todos: ITodo[]
+    todos: Todo[]
     pageProps: any
   }
 }

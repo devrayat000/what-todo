@@ -4,26 +4,12 @@ import Collapse from '@mui/material/Collapse'
 import { TransitionGroup } from 'react-transition-group'
 import shallow from 'zustand/shallow'
 
-// import { useTodoStore } from '../utils/store'
 import TodoItem from './TodoItem'
-import { ITodo } from '../interfaces'
 import { Todo } from '../graphql/generated'
+import { useTodoStore } from '../utils/store'
 
-const Todos = ({ todos }: { todos?: Todo[] }) => {
-  // const { deleteTodo, completeTodo } = useTodoStore(
-  //   useCallback(
-  //     store => ({
-  //       completeTodo: store.completeTodo,
-  //       deleteTodo: store.deleteTodo,
-  //     }),
-  //     []
-  //   ),
-  //   shallow
-  // )
-
-  // useEffect(() => {
-  //   console.log(todos)
-  // }, [todos])
+const Todos: React.FC = () => {
+  const todos = useTodoStore(store => store.todo.items)
 
   const render = useRef(0)
   console.log('todos rendered:', ++render.current)
@@ -31,14 +17,10 @@ const Todos = ({ todos }: { todos?: Todo[] }) => {
   return (
     <List>
       <TransitionGroup>
-        {todos?.map(todo => {
+        {todos.map(todo => {
           return (
             <Collapse key={todo._id}>
-              <TodoItem
-                // onDelete={deleteTodo}
-                // onDone={completeTodo}
-                todo={todo}
-              />
+              <TodoItem todo={todo} />
             </Collapse>
           )
         })}

@@ -9,16 +9,12 @@ import { styled } from '@mui/material/styles'
 import DeleteIcon from '@mui/icons-material/Delete'
 import format from 'date-fns/format'
 
-import { ITodo } from '../interfaces'
-// import { useTodoStore } from '../utils/store'
 import { FORMATTER } from '../utils/const'
-import useTodo from '../hooks/useTodo'
-import { Todo } from '../graphql/generated'
+import { Todo, useTodoUpdatedSubscription } from '../graphql/generated'
+import { useTodoStore } from '../utils/store'
 
 export interface TodoItemProps {
   todo: Todo
-  // onDone(id: string): void
-  // onDelete(id: string): void
 }
 
 export interface TodoListItemTextProps extends ListItemTextProps {
@@ -31,21 +27,26 @@ export const TodoListItemText = styled(ListItemText, {
   textDecoration: done ? 'line-through' : 'initial',
 }))
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
-  const { todo: finalTodo, isLoading, done } = useTodo(todo)
+const TodoItem: React.FC<TodoItemProps> = ({ todo: t }) => {
+  // const [{ fetching, data }] = useTodoUpdatedSubscription({
+  //   variables: { id: todo._id },
+  // })
+  const done = useTodoStore(store => store.todo.completeTodo)
+  const deleteTodo = useTodoStore(store => store.todo.deleteTodo)
 
-  const label = useMemo(() => `todo-checkbox-${todo._id}`, [todo._id])
+  const label = useMemo(() => `todo-checkbox-${t._id}`, [t._id])
+  // const t = useMemo(() => data?.todoUpdated ?? todo, [data?.todoUpdated, todo])
 
   return (
     <ListItem
       role='listitem'
-      disabled={isLoading}
+      disabled={false}
       secondaryAction={
         <IconButton
           edge='end'
           aria-label='deletes'
           onClick={_e => {
-            // onDelete(fetchedTodo?._id)
+            deleteTodo(t._id)
           }}
         >
           <DeleteIcon />
@@ -57,13 +58,13 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
         <ListItemIcon>
           <Checkbox
             edge='start'
-            checked={finalTodo.done}
+            checked={t.done}
             tabIndex={-1}
             disableRipple
             onClick={_e => {
               console.log('checked')
 
-              done()
+              done(t._id)
               // mutate(fetchedTodo ?? todo)
             }}
             inputProps={{
@@ -74,18 +75,15 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
         </ListItemIcon>
         <TodoListItemText
           id={label}
-          primary={finalTodo.note}
+          primary={t.todo}
           primaryTypographyProps={{
             role: 'contentinfo',
           }}
-          secondary={format(
-            new Date(finalTodo.createdAt.toString()),
-            FORMATTER
-          )}
+          secondary={format(new Date(t.createdAt), FORMATTER)}
           secondaryTypographyProps={{
             role: 'timer',
           }}
-          done={finalTodo.done}
+          done={t.done}
         />
       </ListItemButton>
     </ListItem>

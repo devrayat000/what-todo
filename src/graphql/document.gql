@@ -34,6 +34,13 @@ mutation DeleteTodo($id: ID!) {
   }
 }
 
+mutation ToggleDone($id: ID!) {
+  toggleDone(id: $id) {
+    __typename
+    _id
+  }
+}
+
 subscription TodoAdded {
   todoAdded {
     ...TodoFrag

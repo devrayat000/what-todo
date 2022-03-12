@@ -4,37 +4,59 @@ import createContext from 'zustand/context'
 
 import type { StoreModel } from '../interfaces'
 import Todo from './todo'
+import { darkTheme, lightTheme } from '../styles/theme'
 
 const store: StateCreator<StoreModel> = set => ({
-  todos: [],
-  createTodo(text) {
-    const newTodo = new Todo(text, '')
-    set(prev => ({
-      todos: [...prev.todos, newTodo],
-    }))
-  },
-  completeTodo(id) {
-    set(prev => ({
-      todos: prev.todos.map(todo => {
-        if (todo._id === id) {
-          return {
-            ...todo,
-            done: !todo.done,
+  todo: {
+    items: [],
+    createTodo(text, desc) {
+      const newTodo = new Todo(text, desc)
+      set(prev => ({
+        ...prev,
+        items: [...prev.todo.items, newTodo],
+      }))
+    },
+    completeTodo(id) {
+      set(prev => ({
+        ...prev,
+        items: prev.todo.items.map(todo => {
+          if (todo._id === id) {
+            return {
+              ...todo,
+              done: !todo.done,
+            }
           }
-        }
-        return todo
-      }),
-    }))
+          return todo
+        }),
+      }))
+    },
+    deleteTodo(id) {
+      set(prev => ({
+        ...prev,
+        items: prev.todo.items.filter(todo => todo._id !== id),
+      }))
+    },
+    deleteAll() {
+      set(prev => ({
+        ...prev,
+        items: [],
+      }))
+    },
   },
-  deleteTodo(id) {
-    set(prev => ({
-      todos: prev.todos.filter(todo => todo._id !== id),
-    }))
-  },
-  deleteAll() {
-    set({
-      todos: [],
-    })
+  theme: {
+    item: lightTheme,
+    toggleTheme() {
+      set(prev => ({
+        ...prev,
+        item: prev.theme.item === lightTheme ? darkTheme : lightTheme,
+      }))
+    },
+    setTheme(newTheme) {
+      set(prev => ({
+        ...prev,
+        item: newTheme,
+      }))
+    },
   },
 })
 
@@ -46,7 +68,7 @@ export const useCreatedStore = create<StoreModel>(
       serialize: JSON.stringify,
       deserialize(persisted) {
         const deserialized = JSON.parse(persisted)
-        ;(deserialized.state as StoreModel).todos.map(todo => {
+        ;(deserialized.state as StoreModel).todo.items.map(todo => {
           return {
             ...todo,
             createdAt: new Date(todo.createdAt),
@@ -55,15 +77,15 @@ export const useCreatedStore = create<StoreModel>(
         return deserialized
       },
       merge: (persistedState: StoreModel, currentState) => {
-        currentState.todos = currentState.todos
+        currentState.todo.items = currentState.todo.items
           .filter(todo =>
-            persistedState.todos.some(prev => prev.note === todo.note)
+            persistedState.todo.items.some(prev => prev.todo === todo.todo)
           )
           .map(todo => {
             return {
               ...todo,
               _id:
-                persistedState.todos.find(prev => prev.note === todo.note)
+                persistedState.todo.items.find(prev => prev.todo === todo.todo)
                   ?._id ?? todo._id,
             }
           })

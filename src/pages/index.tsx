@@ -12,19 +12,9 @@ import { initBackend } from '../config/backendConfig'
 import client, { ssr } from '../utils/urql'
 import { TodosDocument, useTodosQuery } from '../graphql/generated'
 
-initFrontend()
+// initFrontend()
 
 const Home: NextPage = () => {
-  const [{ data, error, fetching }] = useTodosQuery()
-
-  if (fetching) {
-    return <h1>loading...</h1>
-  }
-
-  if (error) {
-    return <pre>{(error as Error).message}</pre>
-  }
-
   return (
     <section>
       <Head>
@@ -39,7 +29,8 @@ const Home: NextPage = () => {
         }}
       >
         <AddTodo />
-        <Todos todos={data?.todos} />
+        {/* <Todos todos={data?.todos} /> */}
+        <Todos />
       </Container>
     </section>
   )
@@ -47,46 +38,46 @@ const Home: NextPage = () => {
 
 const MainPaper = withProps(Paper, { elevation: 2, component: 'main' })
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  try {
-    await initBackend()
-    const session = await Session.getSession(ctx.req, ctx.res)
+// export const getServerSideProps: GetServerSideProps = async ctx => {
+//   try {
+//     await initBackend()
+//     const session = await Session.getSession(ctx.req, ctx.res)
 
-    await client.query(TodosDocument).toPromise()
+//     await client.query(TodosDocument).toPromise()
 
-    return {
-      props: {
-        urqlState: ssr.extractData(),
-      },
-    }
-  } catch (error) {
-    console.log(error)
+//     return {
+//       props: {
+//         urqlState: ssr.extractData(),
+//       },
+//     }
+//   } catch (error) {
+//     console.log(error)
 
-    if (
-      error instanceof SessionError &&
-      error.type === SessionError.TRY_REFRESH_TOKEN
-    ) {
-      console.log('refresh')
+//     if (
+//       error instanceof SessionError &&
+//       error.type === SessionError.TRY_REFRESH_TOKEN
+//     ) {
+//       console.log('refresh')
 
-      return { props: { fromSupertokens: 'needs-refresh' } }
-    } else if (
-      error instanceof SessionError &&
-      error.type === SessionError.UNAUTHORISED
-    ) {
-      console.log('unauthorized')
+//       return { props: { fromSupertokens: 'needs-refresh' } }
+//     } else if (
+//       error instanceof SessionError &&
+//       error.type === SessionError.UNAUTHORISED
+//     ) {
+//       console.log('unauthorized')
 
-      return {
-        redirect: {
-          destination: '/auth?rid=emailpassword',
-          permanent: false,
-        },
-      }
-    } else {
-      console.log(error)
+//       return {
+//         redirect: {
+//           destination: '/auth?rid=emailpassword',
+//           permanent: false,
+//         },
+//       }
+//     } else {
+//       console.log(error)
 
-      throw error
-    }
-  }
-}
+//       throw error
+//     }
+//   }
+// }
 
 export default Home

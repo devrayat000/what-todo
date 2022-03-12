@@ -11,25 +11,30 @@ import {
 } from 'supertokens-auth-react/recipe/emailpassword'
 
 import withProps from '../utils/withProps'
-import useAddTodo from '../hooks/useAddTodo'
+import { useTodoStore } from '../utils/store'
 
 const AddTodo = () => {
+  const addTodo = useTodoStore(store => store.todo.createTodo)
+
   const inputRef = useRef<HTMLInputElement>(null)
   const render = useRef(0)
   console.log('add todo rendered:', ++render.current)
 
-  const { add, isLoading, isError, error } = useAddTodo()
+  // const { add, isLoading, isError, error } = useAddTodo()
 
   const handleCreateTodo = useCallback<React.FormEventHandler<HTMLDivElement>>(
     async e => {
       e.preventDefault()
       if (inputRef.current?.value) {
-        // createTodo(inputRef.current.value)
-        add(inputRef.current.value)
+        // Add Todo
+        addTodo(
+          inputRef.current.value,
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, et?'
+        )
         inputRef.current.value = ''
       }
     },
-    [add]
+    []
   )
 
   return (
@@ -49,11 +54,11 @@ const AddTodo = () => {
           sx={{
             px: 6,
           }}
-          disabled={isLoading}
+          disabled={false}
           onClick={async e => {
             e.preventDefault()
-            await signOut()
-            redirectToAuth()
+            // await signOut()
+            // redirectToAuth()
           }}
         >
           Logout
@@ -65,7 +70,7 @@ const AddTodo = () => {
           sx={{
             px: 6,
           }}
-          disabled={isLoading}
+          disabled={false}
         >
           Clear
         </Button>
@@ -76,16 +81,16 @@ const AddTodo = () => {
           sx={{
             px: 6,
           }}
-          disabled={isLoading}
+          disabled={false}
         >
           Add
         </Button>
       </Box>
-      <Collapse in={isError}>
+      {/* <Collapse in={isError}>
         <Typography color='crimson' variant='subtitle2'>
           {error?.message}
         </Typography>
-      </Collapse>
+      </Collapse> */}
     </Box>
   )
 }

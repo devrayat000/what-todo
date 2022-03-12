@@ -1,14 +1,14 @@
 import { nanoid } from 'nanoid'
 
-import { ITodo } from '../interfaces'
+import { Todo as ITodo } from '../graphql/generated'
 
 export default class Todo implements ITodo {
   _id: string
   done: boolean
-  createdAt: Date
-  constructor(public note: string, public user_id: string) {
+  createdAt: string
+  constructor(public todo: string, public description: string) {
     this._id = nanoid(7)
-    this.createdAt = new Date()
+    this.createdAt = new Date().toISOString()
     this.done = false
   }
 }

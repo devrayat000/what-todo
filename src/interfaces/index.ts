@@ -1,15 +1,17 @@
-export interface StoreModel {
-  todos: ITodo[]
-  createTodo(text: string): void
-  completeTodo(id: string): void
-  deleteTodo(id: string): void
-  deleteAll(): void
-}
+import { Theme } from '@mui/material'
+import { Todo } from '../graphql/generated'
 
-export interface ITodo {
-  _id: string
-  user_id: string
-  note: string
-  done: boolean
-  createdAt: Date
+export interface StoreModel {
+  todo: {
+    items: Todo[]
+    createTodo(text: string, desc: string): void
+    completeTodo(id: string): void
+    deleteTodo(id: string): void
+    deleteAll(): void
+  }
+  theme: {
+    item: Theme
+    toggleTheme(): void
+    setTheme(newTheme: Theme): void
+  }
 }
