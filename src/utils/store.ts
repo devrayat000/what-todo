@@ -1,104 +1,63 @@
-import create, { StateCreator } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
-import createContext from 'zustand/context'
+import { action, computed, createStore, createTypedHooks } from 'easy-peasy'
 
+import { darkTheme, lightTheme } from '../styles/theme'
 import type { StoreModel } from '../interfaces'
 import Todo from './todo'
-import { darkTheme, lightTheme } from '../styles/theme'
 
-const store: StateCreator<StoreModel> = set => ({
-  todo: {
-    items: [],
-    createTodo(text, desc) {
-      const newTodo = new Todo(text, desc)
-      set(prev => ({
-        ...prev,
-        items: [...prev.todo.items, newTodo],
-      }))
-    },
-    completeTodo(id) {
-      set(prev => ({
-        ...prev,
-        items: prev.todo.items.map(todo => {
-          if (todo._id === id) {
+export const store = createStore<StoreModel>(
+  {
+    todo: {
+      items: [
+        new Todo('Todo 1', ''),
+        new Todo('Todo 2', ''),
+        new Todo('Todo 3', ''),
+        new Todo('Todo 4', ''),
+      ],
+      remaining: computed([state => state.items], todos => {
+        return todos.filter(item => !item.done)
+      }),
+      createTodo: action((state, { text, desc }) => {
+        state.items.push(new Todo(text, desc))
+      }),
+      completeTodo: action((state, id) => {
+        state.items = state.items.map(item => {
+          if (item._id === id) {
             return {
-              ...todo,
-              done: !todo.done,
+              ...item,
+              done: !item.done,
             }
           }
-          return todo
-        }),
-      }))
-    },
-    deleteTodo(id) {
-      set(prev => ({
-        ...prev,
-        items: prev.todo.items.filter(todo => todo._id !== id),
-      }))
-    },
-    deleteAll() {
-      set(prev => ({
-        ...prev,
-        items: [],
-      }))
-    },
-  },
-  theme: {
-    item: lightTheme,
-    toggleTheme() {
-      set(prev => ({
-        ...prev,
-        item: prev.theme.item === lightTheme ? darkTheme : lightTheme,
-      }))
-    },
-    setTheme(newTheme) {
-      set(prev => ({
-        ...prev,
-        item: newTheme,
-      }))
-    },
-  },
-})
-
-export const useCreatedStore = create<StoreModel>(
-  devtools(
-    persist(store, {
-      name: 'todo-storage',
-      getStorage: () => localStorage,
-      serialize: JSON.stringify,
-      deserialize(persisted) {
-        const deserialized = JSON.parse(persisted)
-        ;(deserialized.state as StoreModel).todo.items.map(todo => {
-          return {
-            ...todo,
-            createdAt: new Date(todo.createdAt),
-          }
+          return item
         })
-        return deserialized
-      },
-      merge: (persistedState: StoreModel, currentState) => {
-        currentState.todo.items = currentState.todo.items
-          .filter(todo =>
-            persistedState.todo.items.some(prev => prev.todo === todo.todo)
-          )
-          .map(todo => {
-            return {
-              ...todo,
-              _id:
-                persistedState.todo.items.find(prev => prev.todo === todo.todo)
-                  ?._id ?? todo._id,
-            }
-          })
-        return currentState
-      },
-    }),
-    {
-      name: 'todo-store',
-    }
-  )
+      }),
+      deleteTodo: action((state, id) => {
+        state.items = state.items.filter(item => item._id !== id)
+      }),
+      deleteCompleted: action(state => {
+        state.items = state.items.filter(item => !item.done)
+      }),
+    },
+
+    theme: {
+      item: lightTheme,
+      toggleTheme: action(state => {
+        state.item =
+          state.item.palette.mode === 'light' ? darkTheme : lightTheme
+      }),
+      setTheme: action((state, newTheme) => {
+        state.item = newTheme
+      }),
+    },
+  },
+  {
+    name: 'todo-store',
+    devTools: process.env.NODE_ENV !== 'production',
+  }
 )
-export const createStore = () => useCreatedStore
 
-const { Provider, useStore } = createContext<StoreModel>()
+// export const createStore = () => store
 
-export { Provider, useStore as useTodoStore }
+const { useStoreActions, useStore, useStoreState } =
+  createTypedHooks<StoreModel>()
+
+export { useStoreActions, useStore, useStoreState as useTodoStore }

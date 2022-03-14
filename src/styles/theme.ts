@@ -31,6 +31,18 @@ const typography = (palette: Palette): TypographyOptions => ({
     color: palette.background.default,
     letterSpacing: 12,
   },
+  h5: {
+    color: palette.text.primary,
+    fontSize: 'inherit',
+  },
+  button: {
+    color: palette.text.secondary,
+    textTransform: 'none',
+    fontSize: '0.75rem',
+  },
+  caption: {
+    color: palette.text.caption,
+  },
 })
 
 export const lightTheme = createTheme({
@@ -40,9 +52,23 @@ export const lightTheme = createTheme({
     background: {
       default: 'hsl(0, 0%, 98%)',
     },
+    text: {
+      primary: 'hsl(235, 19%, 35%)',
+      secondary: 'hsl(236, 9%, 61%)',
+      caption: 'hsl(233, 11%, 84%)',
+    },
   },
   breakpoints,
   typography,
+  components: {
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: '1.5em',
+        },
+      },
+    },
+  },
 })
 
 export const darkTheme = createTheme({
@@ -63,4 +89,10 @@ import { Theme } from '@mui/material/styles'
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface (remove this line if you don't have the rule enabled)
   interface DefaultTheme extends Theme {}
+}
+
+declare module '@mui/material/styles' {
+  interface TypeText {
+    caption: string
+  }
 }

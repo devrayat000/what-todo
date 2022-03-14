@@ -43,15 +43,19 @@ const Home: NextPage = () => {
           maxWidth='md'
           sx={{
             p: 2,
-            borderRadius: 2,
             mt: t => t.spacing(12),
           }}
         >
-          <Typography variant='h4' sx={{ textTransform: 'uppercase' }}>
+          <Typography
+            variant='h4'
+            component='h5'
+            sx={{ textTransform: 'uppercase' }}
+          >
             Todo
           </Typography>
           <AddTodo />
-          {/* <Todos /> */}
+          <Box sx={{ height: t => t.spacing(3) }} />
+          <Todos />
         </Container>
       </Box>
     </Box>
