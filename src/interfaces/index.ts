@@ -1,15 +1,24 @@
 import type { Theme } from '@mui/material'
-import type { Action, ActionOn, Computed } from 'easy-peasy'
+import type { Action, Computed } from 'easy-peasy'
 
 import type { Todo } from '../graphql/generated'
 
+export const enum FilterState {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
 interface TodoModel {
   items: Todo[]
+  filterState: FilterState
   remaining: Computed<this, Todo[], StoreModel>
   createTodo: Action<this, { text: string; desc: string }>
   completeTodo: Action<this, string>
   deleteTodo: Action<this, string>
   deleteCompleted: Action<this>
+  // Filter
+  filter: Action<this, FilterState>
+  filteredItems: Computed<this, Todo[], StoreModel>
 }
 
 interface ThemeModel {
@@ -19,7 +28,7 @@ interface ThemeModel {
 }
 
 export interface InitialState {
-  todo: { items: Todo[] }
+  todo: { items: Todo[]; filterState: FilterState }
   theme: { item: Theme }
 }
 

@@ -8,7 +8,7 @@ const TodoCheckbox: React.FC<CheckboxProps> = props => {
   return (
     <Checkbox
       icon={<RadioButtonUnchecked sx={{ color: t => t.palette.grey[500] }} />}
-      checkedIcon={<CheckedIcon sx={{}} />}
+      checkedIcon={<CheckedIcon />}
       {...props}
     />
   )

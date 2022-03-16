@@ -1,52 +1,13 @@
 import { useRef, useCallback } from 'react'
 import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
-import Collapse from '@mui/material/Collapse'
-import Typography from '@mui/material/Typography'
-import {
-  signOut,
-  redirectToAuth,
-} from 'supertokens-auth-react/recipe/emailpassword'
-import {
-  CheckBoxRounded,
-  CheckCircle,
-  RadioButtonUnchecked,
-  Add,
-} from '@mui/icons-material'
+import { Add } from '@mui/icons-material'
 import withProps from '../utils/withProps'
-import { useStoreActions, useTodoStore } from '../utils/store'
-import {
-  InputBase,
-  Checkbox,
-  SvgIcon,
-  Divider,
-  IconButton,
-} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { useStoreActions } from '../utils/store'
+import { InputBase, Divider, IconButton } from '@mui/material'
 import TodoCheckbox from './checkbox'
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    boxShadow: theme.shadows[3],
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    fontSize: '1rem',
-  },
-  addTodo: {
-    padding: theme.spacing(1.25),
-    flex: 1,
-    fontSize: 'inherit',
-  },
-}))
 
 const AddTodo: React.FC = () => {
   const addTodo = useStoreActions(store => store.todo.createTodo)
-
-  const classes = useStyles()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const render = useRef(0)
@@ -67,13 +28,27 @@ const AddTodo: React.FC = () => {
   }, [])
 
   return (
-    <Paper component='form' className={classes.container}>
+    <Paper
+      component='form'
+      sx={{
+        boxShadow: theme => theme.shadows[3],
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: theme => theme.spacing(1),
+        paddingRight: theme => theme.spacing(1),
+        fontSize: '1rem',
+      }}
+    >
       <TodoCheckbox name='create-todo-checkbox' />
       <InputBase
         placeholder='Create a new todo..'
         fullWidth
         color='primary'
-        className={classes.addTodo}
+        sx={{
+          p: theme => theme.spacing(1.25),
+          flex: 1,
+          fontSize: 'inherit',
+        }}
         inputRef={inputRef}
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation='vertical' />

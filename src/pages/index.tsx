@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import type { GetServerSideProps, NextPage } from 'next'
 import Session, { Error as SessionError } from 'supertokens-node/recipe/session'
 
-import Todos from '../components/Todos'
+import Todos from '../components/todo'
 import AddTodo from '../components/AddTodo'
 import withProps from '../utils/withProps'
 import { initFrontend } from '../config/frontendConfig'
