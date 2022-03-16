@@ -1,8 +1,9 @@
 import { StoreProvider as Provider } from 'easy-peasy'
 
-import { store } from '../utils/store'
+import { useInitialStore } from '../utils/store'
 
 const StoreProvider: React.FC = ({ children }) => {
+  const store = useInitialStore()
   return <Provider store={store}>{children}</Provider>
 }
 

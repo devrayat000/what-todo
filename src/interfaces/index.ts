@@ -1,5 +1,5 @@
 import type { Theme } from '@mui/material'
-import type { Action, Computed } from 'easy-peasy'
+import type { Action, ActionOn, Computed } from 'easy-peasy'
 
 import type { Todo } from '../graphql/generated'
 
@@ -18,7 +18,12 @@ interface ThemeModel {
   setTheme: Action<this, Theme>
 }
 
-export interface StoreModel {
+export interface InitialState {
+  todo: { items: Todo[] }
+  theme: { item: Theme }
+}
+
+export interface StoreModel extends InitialState {
   todo: TodoModel
   theme: ThemeModel
 }
