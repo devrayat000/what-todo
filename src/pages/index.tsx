@@ -8,10 +8,10 @@ import Session, { Error as SessionError } from 'supertokens-node/recipe/session'
 
 import Todos from '../components/todo'
 import AddTodo from '../components/AddTodo'
-import withProps from '../utils/withProps'
+import withProps from '../lib/utils/withProps'
 import { initFrontend } from '../config/frontendConfig'
 import { initBackend } from '../config/backendConfig'
-import client, { ssr } from '../utils/urql'
+import client, { ssr } from '../lib/utils/urql'
 import { TodosDocument, useTodosQuery } from '../graphql/generated'
 import { Box, Card, TextField, InputBase } from '@mui/material'
 

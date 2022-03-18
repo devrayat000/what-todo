@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 import { ITodo } from '../interfaces'
-import { api } from '../utils/axios'
+import { api } from '../lib/utils/axios'
 
 function todoUpdater(id: string) {
   console.log('updating')

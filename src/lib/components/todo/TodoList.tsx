@@ -6,9 +6,9 @@ import { TransitionGroup } from 'react-transition-group'
 import { Button, Divider, ListItem, Typography } from '@mui/material'
 
 import FilterTodos from '../filter'
-import Todo from '../../utils/todo'
-import TodoItem from '../TodoItem'
-import withProps from '../../utils/withProps'
+import TodoItem from '../todo-item/TodoItem'
+import Todo from '$lib/utils/todo'
+import withProps from '$lib/utils/withProps'
 
 const TodoList: React.FC<{ todos: Todo[]; remaining: number }> = ({
   todos,

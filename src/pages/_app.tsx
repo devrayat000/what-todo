@@ -11,10 +11,10 @@ import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
 import { initFrontend } from '../config/frontendConfig'
-import client, { ssr } from '../utils/urql'
+import client, { ssr } from '../lib/utils/urql'
 import { Todo } from '../graphql/generated'
 import StoreProvider from '../components/StoreProvider'
-import { useTodoStore } from '../utils/store'
+import { useTodoStore } from '../lib/utils/store'
 import createCache from '../styles/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 

@@ -1,7 +1,7 @@
 import type { Theme } from '@mui/material'
 import type { Action, Computed } from 'easy-peasy'
 
-import type { Todo } from '../graphql/generated'
+import type { Todo } from '../../graphql/generated'
 
 export const enum FilterState {
   ALL = 'all',

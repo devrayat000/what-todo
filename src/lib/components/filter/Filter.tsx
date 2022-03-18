@@ -4,8 +4,9 @@ import {
   ToggleButtonGroup,
   styled,
 } from '@mui/material'
-import { FilterState } from '../../interfaces'
-import { useStoreActions, useTodoStore } from '../../utils/store'
+
+import { FilterState } from '$lib/interfaces'
+import { useStoreActions, useTodoStore } from '$lib/utils/store'
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {

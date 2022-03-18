@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 
-import { Todo as ITodo } from '../graphql/generated'
+import { Todo as ITodo } from '../../graphql/generated'
 
 export default class Todo implements ITodo {
   _id: string

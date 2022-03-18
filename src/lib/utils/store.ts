@@ -7,7 +7,7 @@ import {
   Store,
 } from 'easy-peasy'
 
-import { darkTheme, lightTheme } from '../styles/theme'
+import { darkTheme, lightTheme } from '../../styles/theme'
 import { FilterState, InitialState, StoreModel } from '../interfaces'
 import Todo from './todo'
 

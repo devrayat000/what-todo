@@ -1,5 +1,6 @@
 import React from 'react'
-import { useStoreActions, useTodoStore } from '../../utils/store'
+
+import { useStoreActions, useTodoStore } from '$lib/utils/store'
 import Filter from './Filter'
 
 const FilterTodos: React.FC = () => {

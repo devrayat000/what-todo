@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from 'react-query'
 import { getUserId } from 'supertokens-auth-react/recipe/session'
 
 import { ITodo } from '../interfaces'
-import { api } from '../utils/axios'
+import { api } from '../lib/utils/axios'
 import Todo from '../utils/todo'
 
 function todoAdder(newTodoNote: string) {

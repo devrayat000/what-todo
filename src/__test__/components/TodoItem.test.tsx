@@ -2,11 +2,11 @@ import 'jest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import TodoItem from '../../components/TodoItem'
+import TodoItem from '../../components/todo-item/TodoItem'
 import StoreProvider from '../../components/StoreProvider'
 import { format } from 'date-fns'
-import { FORMATTER } from '../../utils/const'
-import { createStore } from '../../utils/store'
+import { FORMATTER } from '../../lib/utils/const'
+import { createStore } from '../../lib/utils/store'
 
 const doneFn = jest.fn()
 const deleteFn = jest.fn()

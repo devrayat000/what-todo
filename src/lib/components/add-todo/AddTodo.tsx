@@ -1,14 +1,16 @@
 import { useRef, useCallback } from 'react'
 import Paper from '@mui/material/Paper'
 import { Add } from '@mui/icons-material'
-import withProps from '../utils/withProps'
-import { useStoreActions } from '../utils/store'
 import { InputBase, Divider, IconButton } from '@mui/material'
-import TodoCheckbox from './checkbox'
 
-const AddTodo: React.FC = () => {
-  const addTodo = useStoreActions(store => store.todo.createTodo)
+import { useStoreActions } from '$lib/utils/store'
+import TodoCheckbox from '../checkbox'
 
+export interface MyAddTodoProps {
+  createTodo(text: string): void | Promise<void>
+}
+
+export const MyAddTodo: React.FC<MyAddTodoProps> = ({ createTodo }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const render = useRef(0)
   console.log('add todo rendered:', ++render.current)
@@ -18,11 +20,7 @@ const AddTodo: React.FC = () => {
   >(async e => {
     e.preventDefault()
     if (inputRef.current?.value) {
-      // Add Todo
-      addTodo({
-        desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, et?',
-        text: inputRef.current.value,
-      })
+      await createTodo(inputRef.current.value)
       inputRef.current.value = ''
     }
   }, [])
@@ -59,6 +57,19 @@ const AddTodo: React.FC = () => {
   )
 }
 
-export default AddTodo
+const AddTodo: React.FC = () => {
+  const addTodo = useStoreActions(store => store.todo.createTodo)
 
-const FormPaper = withProps(Paper, { elevation: 2, component: 'form' })
+  return (
+    <MyAddTodo
+      createTodo={text =>
+        addTodo({
+          desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, et?',
+          text,
+        })
+      }
+    />
+  )
+}
+
+export default AddTodo
