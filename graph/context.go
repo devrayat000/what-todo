@@ -10,16 +10,20 @@ import (
 	"github.com/supertokens/supertokens-golang/supertokens"
 )
 
+const (
+	ContextKey string = "ILoveYou"
+)
+
 func GinContextToContextMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx := context.WithValue(c.Request.Context(), "GinContextKey", c)
+		ctx := context.WithValue(c.Request.Context(), ContextKey, c)
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }
 
 func GinContextFromContext(ctx context.Context) (*gin.Context, error) {
-	ginContext := ctx.Value("GinContextKey")
+	ginContext := ctx.Value(ContextKey)
 	if ginContext == nil {
 		err := fmt.Errorf("could not retrieve gin.Context")
 		return nil, err

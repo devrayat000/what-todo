@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/devRayat/todoapi/graph/generated"
@@ -15,14 +14,13 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+func (r *mutationResolver) CreateTodo(ctx context.Context, text string) (*model.Todo, error) {
 	todo := &model.Todo{
-		Todo:        input.Todo,
-		Description: input.Description,
+		Todo: text,
 	}
 
 	columns := util.GetColumns(ctx)
-	result := r.DB.Table("todos").Select("Todo", "Description").Clauses(clause.Returning{Columns: columns}).Create(todo)
+	result := r.DB.Table("todos").Select("Todo").Clauses(clause.Returning{Columns: columns}).Create(todo)
 
 	r.Subscriber.NewTodo = todo
 
@@ -35,19 +33,10 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	return todo, result.Error
 }
 
-func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input model.UpdateTodo) (*model.Todo, error) {
+func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, text string) (*model.Todo, error) {
 	updatedTodo := &model.Todo{ID: id}
 
-	model := r.DB.Table("todos").Model(updatedTodo).Clauses(clause.Returning{})
-
-	if input.Todo != nil {
-		model = model.UpdateColumn("todos", *input.Todo)
-	}
-	if input.Description != nil {
-		model = model.UpdateColumn("description", *input.Description)
-	}
-
-	result := model
+	result := r.DB.Table("todos").Model(updatedTodo).Clauses(clause.Returning{}).UpdateColumn("todo", text)
 
 	r.Subscriber.UpdatedTodo = updatedTodo
 
@@ -85,12 +74,12 @@ func (r *mutationResolver) ToggleDone(ctx context.Context, id string) (*model.To
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	gc, err := GinContextFromContext(ctx)
+	// gc, err := GinContextFromContext(ctx)
 
-	if err != nil {
-		fmt.Printf("Error occured while fetching id, %s", err.Error())
-	}
-	fmt.Printf("User id: %s", gc.Request.URL)
+	// if err != nil {
+	// 	fmt.Printf("Error occured while fetching id, %s", err.Error())
+	// }
+	// fmt.Printf("User id: %s", gc.Request.URL)
 
 	var todos []*model.Todo
 

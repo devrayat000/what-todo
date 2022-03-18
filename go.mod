@@ -3,12 +3,12 @@ module github.com/devRayat/todoapi
 go 1.17
 
 require (
-	github.com/99designs/gqlgen v0.15.1
+	github.com/99designs/gqlgen v0.17.1
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/gorilla/websocket v1.4.2
 	github.com/supertokens/supertokens-golang v0.5.0
-	github.com/vektah/gqlparser/v2 v2.2.0
+	github.com/vektah/gqlparser/v2 v2.4.0
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/gorm v1.22.5
 )
@@ -42,8 +42,8 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

@@ -36,7 +36,8 @@ func SuperToken() gin.HandlerFunc {
 		RecipeList: []supertokens.Recipe{
 			session.Init(nil),
 			emailpassword.Init(nil),
-		}, OnGeneralError: func(err error, req *http.Request, res http.ResponseWriter) {
+		},
+		OnGeneralError: func(err error, req *http.Request, res http.ResponseWriter) {
 			if err != nil {
 				log.Fatal(err)
 				res.WriteHeader(500)

@@ -46,10 +46,10 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateTodo func(childComplexity int, input model.NewTodo) int
+		CreateTodo func(childComplexity int, text string) int
 		DeleteTodo func(childComplexity int, id string) int
 		ToggleDone func(childComplexity int, id string) int
-		UpdateTodo func(childComplexity int, id string, input model.UpdateTodo) int
+		UpdateTodo func(childComplexity int, id string, text string) int
 	}
 
 	Query struct {
@@ -64,17 +64,16 @@ type ComplexityRoot struct {
 	}
 
 	Todo struct {
-		CreatedAt   func(childComplexity int) int
-		Description func(childComplexity int) int
-		Done        func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Todo        func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		Done      func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Todo      func(childComplexity int) int
 	}
 }
 
 type MutationResolver interface {
-	CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error)
-	UpdateTodo(ctx context.Context, id string, input model.UpdateTodo) (*model.Todo, error)
+	CreateTodo(ctx context.Context, text string) (*model.Todo, error)
+	UpdateTodo(ctx context.Context, id string, text string) (*model.Todo, error)
 	DeleteTodo(ctx context.Context, id string) (*model.Todo, error)
 	ToggleDone(ctx context.Context, id string) (*model.Todo, error)
 }
@@ -113,7 +112,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTodo(childComplexity, args["input"].(model.NewTodo)), true
+		return e.complexity.Mutation.CreateTodo(childComplexity, args["text"].(string)), true
 
 	case "Mutation.deleteTodo":
 		if e.complexity.Mutation.DeleteTodo == nil {
@@ -149,7 +148,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTodo(childComplexity, args["id"].(string), args["input"].(model.UpdateTodo)), true
+		return e.complexity.Mutation.UpdateTodo(childComplexity, args["id"].(string), args["text"].(string)), true
 
 	case "Query.todo":
 		if e.complexity.Query.Todo == nil {
@@ -207,13 +206,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Todo.CreatedAt(childComplexity), true
-
-	case "Todo.description":
-		if e.complexity.Todo.Description == nil {
-			break
-		}
-
-		return e.complexity.Todo.Description(childComplexity), true
 
 	case "Todo.done":
 		if e.complexity.Todo.Done == nil {
@@ -324,19 +316,8 @@ var sources = []*ast.Source{
 type Todo {
   _id: ID!
   todo: String!
-  description: String!
   done: Boolean!
   createdAt: String!
-}
-
-input NewTodo {
-  todo: String!
-  description: String!
-}
-
-input UpdateTodo {
-  todo: String
-  description: String
 }
 
 type Query {
@@ -345,8 +326,8 @@ type Query {
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
-  updateTodo(id: ID!, input: UpdateTodo!): Todo!
+  createTodo(text: String!): Todo!
+  updateTodo(id: ID!, text: String!): Todo!
   deleteTodo(id: ID!): Todo!
   toggleDone(id: ID!): Todo!
 }
@@ -367,15 +348,15 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 func (ec *executionContext) field_Mutation_createTodo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 model.NewTodo
-	if tmp, ok := rawArgs["input"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewTodo2githubᚗcomᚋdevRayatᚋtodoapiᚋgraphᚋmodelᚐNewTodo(ctx, tmp)
+	var arg0 string
+	if tmp, ok := rawArgs["text"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["input"] = arg0
+	args["text"] = arg0
 	return args, nil
 }
 
@@ -421,15 +402,15 @@ func (ec *executionContext) field_Mutation_updateTodo_args(ctx context.Context, 
 		}
 	}
 	args["id"] = arg0
-	var arg1 model.UpdateTodo
-	if tmp, ok := rawArgs["input"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg1, err = ec.unmarshalNUpdateTodo2githubᚗcomᚋdevRayatᚋtodoapiᚋgraphᚋmodelᚐUpdateTodo(ctx, tmp)
+	var arg1 string
+	if tmp, ok := rawArgs["text"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["input"] = arg1
+	args["text"] = arg1
 	return args, nil
 }
 
@@ -556,7 +537,7 @@ func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTodo(rctx, args["input"].(model.NewTodo))
+		return ec.resolvers.Mutation().CreateTodo(rctx, args["text"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -598,7 +579,7 @@ func (ec *executionContext) _Mutation_updateTodo(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTodo(rctx, args["id"].(string), args["input"].(model.UpdateTodo))
+		return ec.resolvers.Mutation().UpdateTodo(rctx, args["id"].(string), args["text"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1057,41 +1038,6 @@ func (ec *executionContext) _Todo_todo(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Todo_description(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Todo",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Todo_done(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1208,14 +1154,14 @@ func (ec *executionContext) ___Directive_description(ctx context.Context, field 
 		Object:     "__Directive",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
+		IsMethod:   true,
 		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
+		return obj.Description(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1224,9 +1170,9 @@ func (ec *executionContext) ___Directive_description(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_locations(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -1380,14 +1326,14 @@ func (ec *executionContext) ___EnumValue_description(ctx context.Context, field 
 		Object:     "__EnumValue",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
+		IsMethod:   true,
 		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
+		return obj.Description(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1396,9 +1342,9 @@ func (ec *executionContext) ___EnumValue_description(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___EnumValue_isDeprecated(ctx context.Context, field graphql.CollectedField, obj *introspection.EnumValue) (ret graphql.Marshaler) {
@@ -1514,14 +1460,14 @@ func (ec *executionContext) ___Field_description(ctx context.Context, field grap
 		Object:     "__Field",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
+		IsMethod:   true,
 		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
+		return obj.Description(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1530,9 +1476,9 @@ func (ec *executionContext) ___Field_description(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Field_args(ctx context.Context, field graphql.CollectedField, obj *introspection.Field) (ret graphql.Marshaler) {
@@ -1718,14 +1664,14 @@ func (ec *executionContext) ___InputValue_description(ctx context.Context, field
 		Object:     "__InputValue",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
+		IsMethod:   true,
 		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
+		return obj.Description(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1734,9 +1680,9 @@ func (ec *executionContext) ___InputValue_description(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___InputValue_type(ctx context.Context, field graphql.CollectedField, obj *introspection.InputValue) (ret graphql.Marshaler) {
@@ -1793,6 +1739,38 @@ func (ec *executionContext) ___InputValue_defaultValue(ctx context.Context, fiel
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.DefaultValue, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) ___Schema_description(ctx context.Context, field graphql.CollectedField, obj *introspection.Schema) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "__Schema",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2069,9 +2047,9 @@ func (ec *executionContext) ___Type_description(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Type_fields(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
@@ -2280,71 +2258,41 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 	return ec.marshalO__Type2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐType(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) ___Type_specifiedByURL(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "__Type",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SpecifiedByURL(), nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
-
-func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj interface{}) (model.NewTodo, error) {
-	var it model.NewTodo
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	for k, v := range asMap {
-		switch k {
-		case "todo":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("todo"))
-			it.Todo, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "description":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			it.Description, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputUpdateTodo(ctx context.Context, obj interface{}) (model.UpdateTodo, error) {
-	var it model.UpdateTodo
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	for k, v := range asMap {
-		switch k {
-		case "todo":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("todo"))
-			it.Todo, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "description":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
 
 // endregion **************************** input.gotpl *****************************
 
@@ -2561,16 +2509,6 @@ func (ec *executionContext) _Todo(ctx context.Context, sel ast.SelectionSet, obj
 		case "todo":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Todo_todo(ctx, field, obj)
-			}
-
-			out.Values[i] = innerFunc(ctx)
-
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "description":
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Todo_description(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -2872,6 +2810,13 @@ func (ec *executionContext) ___Schema(ctx context.Context, sel ast.SelectionSet,
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("__Schema")
+		case "description":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec.___Schema_description(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
 		case "types":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec.___Schema_types(ctx, field, obj)
@@ -3003,6 +2948,13 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 			out.Values[i] = innerFunc(ctx)
 
+		case "specifiedByURL":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec.___Type_specifiedByURL(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3046,11 +2998,6 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNNewTodo2githubᚗcomᚋdevRayatᚋtodoapiᚋgraphᚋmodelᚐNewTodo(ctx context.Context, v interface{}) (model.NewTodo, error) {
-	res, err := ec.unmarshalInputNewTodo(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -3124,11 +3071,6 @@ func (ec *executionContext) marshalNTodo2ᚖgithubᚗcomᚋdevRayatᚋtodoapiᚋ
 		return graphql.Null
 	}
 	return ec._Todo(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNUpdateTodo2githubᚗcomᚋdevRayatᚋtodoapiᚋgraphᚋmodelᚐUpdateTodo(ctx context.Context, v interface{}) (model.UpdateTodo, error) {
-	res, err := ec.unmarshalInputUpdateTodo(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -3407,16 +3349,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	res := graphql.MarshalBoolean(*v)
-	return res
-}
-
-func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {
-	res, err := graphql.UnmarshalString(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOString2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalString(v)
 	return res
 }
 

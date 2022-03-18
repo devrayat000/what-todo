@@ -5,19 +5,8 @@
 type Todo {
   _id: ID!
   todo: String!
-  description: String!
   done: Boolean!
   createdAt: String!
-}
-
-input NewTodo {
-  todo: String!
-  description: String!
-}
-
-input UpdateTodo {
-  todo: String
-  description: String
 }
 
 type Query {
@@ -26,8 +15,8 @@ type Query {
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
-  updateTodo(id: ID!, input: UpdateTodo!): Todo!
+  createTodo(text: String!): Todo!
+  updateTodo(id: ID!, text: String!): Todo!
   deleteTodo(id: ID!): Todo!
   toggleDone(id: ID!): Todo!
 }
