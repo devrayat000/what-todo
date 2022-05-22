@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  button,
+  a,
+  input {
+    @apply select-none;
+  }
+
+  input[type="checkbox"] {
+    @apply appearance-none relative bg-white checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop
+      m-0 p-0 overflow-hidden text-current w-[1.15em] h-[1.15em] transition-all
+      border-[0.15em] checked:border-0 border-light-grayish-blue rounded-full
+      before:absolute before:content-[url('/images/icon-check.svg')] before:inset-0 before:translate-x-1/4 before:-translate-y-1/4;
+    /* @apply appearance-none bg-white m-0 p-0 overflow-hidden text-current w-[1.15em] h-[1.15em]
+      border-[0.15em] checked:border-0 border-light-grayish-blue rounded-full grid place-items-center
+      before:relative before:w-full before:bg-gradient-to-br before:bg-white
+      before:transition-all checked:before:from-check-start checked:before:to-check-stop
+      before:content-[url('/images/icon-check.svg')] before:h-[1.15em] before:-my-2; */
+    /* @apply appearance-none bg-white m-0 text-light-dark-grayish-blue w-[1.15em] h-[1.15em] -translate-y-[0.075em] border-solid border-[0.10em] grid place-items-center before:w-[0.65em] before:h-[0.65em] before:scale-0 before:shadow-checkbox before:origin-bottom-left transition-all before:transition-transform checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop checked:before:scale-100 rounded-full border-gray-400; */
+  }
+  /* input[type="checkbox"]::before { */
+    /* clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); */
+    /* color: black;
+    content: url("/images/icon-check.svg");
+  } */
+}
