@@ -14,7 +14,8 @@ module.exports = {
         "check-stop": ({ opacityValue }) =>
           `hsla(280, 87%, 65%, ${opacityValue ?? 100})`,
         primary: {
-          DEFAULT: ({ opacityValue }) => `hsla(220, 98%, 61%, ${opacityValue})`,
+          DEFAULT: ({ opacityValue }) =>
+            `hsla(220, 98%, 61%, ${opacityValue ?? 100})`,
         },
         light: {
           gray: ({ opacityValue }) => `hsla(0, 0%, 98%, ${opacityValue})`,

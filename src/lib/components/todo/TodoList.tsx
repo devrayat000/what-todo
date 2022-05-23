@@ -40,7 +40,11 @@ const TodoList: React.FC<TodoListProps> = ({
         <p className="my-0">{remaining} items left</p>
         <FilterTodos className="hidden md:flex shadow-none mt-0 p-0" />
 
-        <button type="reset" onClick={clearCompleted}>
+        <button
+          type="reset"
+          className="text-light-dark-grayish-blue/80 hover:text-light-dark-grayish-blue"
+          onClick={clearCompleted}
+        >
           Clear Completed
         </button>
       </ListItem>

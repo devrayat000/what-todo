@@ -3,6 +3,7 @@ import {
   m,
   Reorder,
   useMotionValue,
+  Variants,
   type HTMLMotionProps,
 } from "framer-motion";
 
@@ -31,6 +32,17 @@ export const ListItem = ({
   <m.article role="listitem" className={clsx(cls, className)} {...props} />
 );
 
+const scale: Variants = {
+  initial: {
+    opacity: 0.4,
+    scale: 0,
+  },
+  hover: {
+    opacity: 1,
+    scale: 0.95,
+  },
+};
+
 export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
   const { todo, toggleDone, deleteTodo } = props;
 
@@ -38,33 +50,38 @@ export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
   const boxShadow = useRaisedShadow(y);
   // const label = useMemo(() => `todo-checkbox-${todo._id}`, [todo._id]);
 
+  const clss = clsx(
+    "flex-1 my-0 truncate text-xs",
+    todo.done && "line-through text-light-grayish-blue"
+  );
+
   return (
     <Reorder.Item
       value={todo}
       id={todo._id}
       as="article"
-      className={cls}
       style={{ boxShadow, y }}
     >
-      {/* <ListItem> */}
-      <input
-        type="checkbox"
-        name="done"
-        id="done"
-        checked={todo.done}
-        onChange={() => toggleDone(todo._id)}
-      />
-      <p className="flex-1 my-0 truncate text-xs" role="contentinfo">
-        {todo.todo}
-      </p>
-      <button
-        type="button"
-        onClick={() => deleteTodo(todo._id)}
-        className="grid place-items-center p-1.5 rounded-[50%] w-6 h-6 transition-colors focus-visible:outline-none hover:bg-slate-100 active:bg-slate-200"
-      >
-        <img src="/images/icon-cross.svg" alt="Delete Todo" className="m-0" />
-      </button>
-      {/* </ListItem> */}
+      <m.div className={cls} initial="initial" whileHover="hover">
+        <input
+          type="checkbox"
+          name="done"
+          id="done"
+          checked={todo.done}
+          onChange={() => toggleDone(todo._id)}
+        />
+        <p className={clss} role="contentinfo">
+          {todo.todo}
+        </p>
+        <m.button
+          type="button"
+          variants={scale}
+          onClick={() => deleteTodo(todo._id)}
+          className="grid place-items-center p-1.5 rounded-[50%] w-6 h-6 transition-colors focus-visible:outline-none hover:bg-slate-100 active:bg-slate-200"
+        >
+          <img src="/images/icon-cross.svg" alt="Delete Todo" className="m-0" />
+        </m.button>
+      </m.div>
     </Reorder.Item>
     // <ListItem
     //   role='listitem'
