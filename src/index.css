@@ -7,13 +7,14 @@
   a,
   input {
     @apply select-none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   input[type="checkbox"] {
-    @apply appearance-none relative bg-white checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop
+    @apply appearance-none relative bg-white dark:bg-dark-desaturated-blue checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop
       m-0 p-0 overflow-hidden text-current w-[1.15em] h-[1.15em] transition-all
-      border-[0.15em] checked:border-0 border-light-grayish-blue rounded-full
-      before:absolute before:content-[url('/images/icon-check.svg')] before:inset-0 before:translate-x-1/4 before:-translate-y-1/4;
+      border-[0.1em] checked:border-0 border-light-grayish-blue dark:border-dark-very-grayish-blue rounded-full
+      before:absolute checked:before:content-[url('/images/icon-check.svg')] before:inset-0 before:translate-x-1/4 before:-translate-y-1/4;
     /* @apply appearance-none bg-white m-0 p-0 overflow-hidden text-current w-[1.15em] h-[1.15em]
       border-[0.15em] checked:border-0 border-light-grayish-blue rounded-full grid place-items-center
       before:relative before:w-full before:bg-gradient-to-br before:bg-white

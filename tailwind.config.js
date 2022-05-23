@@ -2,6 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,ts,tsx,json}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
@@ -24,7 +25,14 @@ module.exports = {
           "dark-grayish-blue": ({ opacityValue }) =>
             `hsla(236, 9%, 61%, ${opacityValue})`,
           "very-dark-grayish-blue": ({ opacityValue }) =>
-            `hsla235, 19%, 35%, ${opacityValue})`,
+            `hsla(235, 19%, 35%, ${opacityValue})`,
+        },
+        dark: {
+          blue: "hsl(235, 21%, 11%)",
+          "desaturated-blue": "hsl(235, 24%, 19%)",
+          "light-grayish-blue": "hsl(234, 39%, 85%)",
+          "grayish-blue": "hsl(234, 11%, 52%)",
+          "very-grayish-blue": "hsl(233, 14%, 35%)",
         },
 
         // dark: {}
