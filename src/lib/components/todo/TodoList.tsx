@@ -24,7 +24,7 @@ const TodoList: React.FC<TodoListProps> = ({
   reorder,
 }) => {
   return (
-    <div className="prose-p:text-light-very-dark-grayish-blue dark:prose-p:text-dark-light-grayish-blue relative z-10 mt-3 rounded-md overflow-hidden shadow-lg divide-y dark:divide-dark-grayish-blue">
+    <div className="relative z-10 mt-3 rounded-md overflow-hidden shadow-lg divide-y dark:divide-dark-grayish-blue">
       <Reorder.Group
         axis="y"
         as="div"

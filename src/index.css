@@ -11,9 +11,31 @@
   }
 
   input[type="checkbox"] {
-    @apply cursor-pointer appearance-none relative bg-white dark:bg-dark-desaturated-blue checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop
+    /* @apply cursor-pointer appearance-none relative bg-transparent checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop
       m-0 p-0 overflow-hidden text-current w-[1.15em] h-[1.15em] transition-all
       border-[0.1em] checked:border-0 border-light-grayish-blue dark:border-dark-very-grayish-blue rounded-full
-      before:absolute checked:before:content-[url('/images/icon-check.svg')] before:inset-0 before:translate-x-1/4 before:-translate-y-1/4;
+      before:absolute checked:before:content-[url('/images/icon-check.svg')] before:inset-0 before:translate-x-1/4 before:-translate-y-1/4; */
+
+    @apply cursor-pointer appearance-none relative bg-light-very-grayish-blue dark:bg-dark-very-grayish-blue text-current
+      w-[1.15em] h-[1.15em] transition-all rounded-full
+      overflow-hidden p-0.5 hover:bg-gradient-to-br hover:from-check-start hover:to-check-stop
+      checked:bg-gradient-to-br checked:from-check-start checked:to-check-stop;
+  }
+
+  input[type="checkbox"]::before {
+    content: "";
+    @apply absolute block top-0 left-0 w-full h-full bg-white dark:bg-dark-desaturated-blue rounded-full scale-[.85];
+  }
+
+  input[type="checkbox"]::after {
+    @apply absolute inset-0 translate-x-1/4 -translate-y-1/4;
+  }
+
+  input[type="checkbox"]:checked::after {
+    content: url('/images/icon-check.svg');
+  }
+
+  input[type="checkbox"]:checked::before {
+    @apply bg-gradient-to-br from-check-start to-check-stop;
   }
 }

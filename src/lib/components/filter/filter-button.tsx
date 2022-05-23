@@ -16,11 +16,11 @@ const FilterButton = ({
   const { state, setState } = useFilter();
 
   const cls = clsx(
-    "font-bold text-light-dark-grayish-blue hover:text-light-very-dark-grayish-blue transition-colors",
+    "font-bold text-light-dark-grayish-blue hover:text-light-very-dark-grayish-blue dark:text-light-very-dark-grayish-blue dark:hover:text-light-dark-grayish-blue transition-colors",
     className,
     state === value && activeClassName,
     {
-      ["text-primary"]: state === value,
+      ["!text-primary"]: state === value,
     }
   );
 

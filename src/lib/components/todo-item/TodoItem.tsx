@@ -43,6 +43,20 @@ const scale: Variants = {
   },
 };
 
+const itemScale: Variants = {
+  initial: {
+    opacity: 0.7,
+    scaleY: 0,
+  },
+  show: {
+    opacity: 1,
+    scaleY: 1,
+    transition: {
+      type: "spring",
+    },
+  },
+};
+
 export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
   const { todo, toggleDone, deleteTodo } = props;
 
@@ -51,8 +65,9 @@ export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
   // const label = useMemo(() => `todo-checkbox-${todo._id}`, [todo._id]);
 
   const clss = clsx(
-    "flex-1 my-0 truncate text-xs",
-    todo.done && "line-through text-light-grayish-blue"
+    "flex-1 my-0 truncate text-xs cursor-pointer text-light-very-dark-grayish-blue dark:text-dark-light-grayish-blue ",
+    todo.done &&
+      "line-through !text-light-grayish-blue dark:!text-light-very-dark-grayish-blue"
   );
 
   return (
@@ -62,7 +77,14 @@ export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
       as="article"
       style={{ boxShadow, y }}
     >
-      <m.div className={cls} initial="initial" whileHover="hover">
+      <m.div
+        className={cls}
+        variants={itemScale}
+        initial="initial"
+        animate="show"
+        exit="initial"
+        whileHover="hover"
+      >
         <input
           type="checkbox"
           name="done"
@@ -77,7 +99,7 @@ export const MyTodoItem: React.FC<MyTodoItemProps> = (props) => {
           type="button"
           variants={scale}
           onClick={() => deleteTodo(todo._id)}
-          className="grid place-items-center p-1.5 rounded-[50%] w-6 h-6 transition-colors focus-visible:outline-none hover:bg-slate-100 active:bg-slate-200"
+          className="grid place-items-center p-1.5 rounded-[50%] w-6 h-6 transition-colors focus-visible:outline-none hover:bg-slate-100 dark:hover:bg-slate-700 active:bg-slate-200"
         >
           <img src="/images/icon-cross.svg" alt="Delete Todo" className="m-0" />
         </m.button>

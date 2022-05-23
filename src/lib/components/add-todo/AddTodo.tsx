@@ -33,7 +33,7 @@ export const MyAddTodo: React.FC<MyAddTodoProps> = ({ createTodo }) => {
         type="text"
         name="todo"
         id="todo"
-        className="flex-1 focus:outline-none bg-inherit caret-primary"
+        className="flex-1 focus:outline-none bg-inherit dark:text-light-very-grayish-blue caret-primary"
         placeholder="Create a new todo..."
         ref={inputRef}
       />
