@@ -21,18 +21,9 @@ const Filter = function ({
   return (
     <footer className={cls} {...props}>
       <FilterContext.Provider value={{ state, setState }}>
-        <FilterButton value={FilterState.ALL} activeClassName="text-primary">
-          All
-        </FilterButton>
-        <FilterButton value={FilterState.ACTIVE} activeClassName="text-primary">
-          Active
-        </FilterButton>
-        <FilterButton
-          value={FilterState.COMPLETED}
-          activeClassName="text-primary"
-        >
-          Completed
-        </FilterButton>
+        <FilterButton value={FilterState.ALL}>All</FilterButton>
+        <FilterButton value={FilterState.ACTIVE}>Active</FilterButton>
+        <FilterButton value={FilterState.COMPLETED}>Completed</FilterButton>
       </FilterContext.Provider>
     </footer>
   );

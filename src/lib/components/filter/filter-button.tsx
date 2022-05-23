@@ -15,7 +15,9 @@ const FilterButton = ({
 }: FilterButtonProps) => {
   const { state, setState } = useFilter();
 
-  const cls = clsx("font-bold", className, state === value && activeClassName);
+  const cls = clsx("font-bold", className, state === value && activeClassName, {
+    ["text-primary"]: state === value,
+  });
 
   return (
     <button
